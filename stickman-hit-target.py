@@ -4,15 +4,15 @@ import numpy as np
 import random
 import pygame
 
-# Mendapatkan resolusi layar pengguna
-screen_width = 640  # Ubah sesuai resolusi layar kamu
+# Resolusi
+screen_width = 640
 screen_height = 480
 
 #cap.set(cv2.CAP_PROP_FPS, 60)
 
 # Inisialisasi Pygame untuk audio
 pygame.mixer.init()
-pygame.mixer.music.load('../myth_roid_straight_bet.mp3')  # Ganti dengan path lagu Anda
+pygame.mixer.music.load('../million_dollar_baby.ogg')  # Ganti dengan path lagu Anda
 pygame.mixer.music.play(-1)  # Memutar lagu secara berulang
 
 # Inisialisasi MediaPipe Pose dan OpenCV
@@ -99,8 +99,19 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 # Reset target ke posisi acak
                 target_position = [random.randint(target_radius, 640 - target_radius), random.randint(0, 480)]
 
-            # Tampilkan score
-            cv2.putText(stickman_frame, f'Score: {score}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+            # Buat gambar teks pada mask
+            text = f'Score: {score}'
+            (font_width, font_height), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
+            text_img = np.zeros((font_height + 10, font_width + 10, 3), dtype=np.uint8)
+
+            # Gambar teks pada mask
+            cv2.putText(text_img, text, (5, font_height + 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+
+            # Flip teks (mirror teks)
+            text_img = cv2.flip(text_img, 1)
+
+            # Tempelkan teks ke frame setelah di-flip
+            stickman_frame[10:10 + text_img.shape[0], w - 10 - text_img.shape[1]:w - 10] = text_img
 
         # Menggunakan mirror effect
         stickman_frame = cv2.flip(stickman_frame, 1)
@@ -115,4 +126,4 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
 # Release dan tutup jendela
 cap.release()
 cv2.destroyAllWindows()
-pygame.mixer.music.stop()  # Berhenti memutar musik
+pygame.mixer.music.stop()
