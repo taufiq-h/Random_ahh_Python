@@ -11,9 +11,9 @@ screen_height = 480
 #cap.set(cv2.CAP_PROP_FPS, 60)
 
 # Inisialisasi Pygame untuk audio
-pygame.mixer.init()
-pygame.mixer.music.load('../million_dollar_baby.ogg')  # Ganti dengan path lagu Anda
-pygame.mixer.music.play(-1)  # Memutar lagu secara berulang
+#pygame.mixer.init()
+#pygame.mixer.music.load('../million_dollar_baby.ogg')  # Ganti dengan path lagu Anda
+#pygame.mixer.music.play(-1)  # Memutar lagu secara berulang
 
 # Inisialisasi MediaPipe Pose dan OpenCV
 mp_drawing = mp.solutions.drawing_utils
